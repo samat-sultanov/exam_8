@@ -9,3 +9,17 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ["name", "description", "category", "picture"]
         widgets = {"description": widgets.Textarea}
+
+
+class ReviewModeratorForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ["text", "mark", "is_moderated"]
+        widgets = {"text": widgets.Textarea}
+
+
+class ReviewUserForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ["text", "mark"]
+        widgets = {"text": widgets.Textarea}
