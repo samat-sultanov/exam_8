@@ -1,6 +1,25 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block nav %}
+    {% if perms.webapp.change_product %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "webapp:update_product" product.pk %}">Редактировать</a>
+        </li>
+    {% endif %}
+
+    {% if perms.webapp.delete_product %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "webapp:delete_product" product.pk %}">Удалить</a>
+        </li>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "webapp:review_create" product.pk %}">Добавить отзыв</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <div class="card mt-3">
         <div class="card-body text-center">
@@ -10,8 +29,9 @@
             {% if product.picture %}
                 <img src="{{ product.picture.url }}" alt="#">
             {% else %}
-                <img src="{% static "images/image.jpg" %}" alt="">
+                <img src="{% static "images/no_photo.jpg" %}" alt="">
             {% endif %}
         </div>
     </div>
+    {% include "partial/reviews_list.html" %}
 {% endblock %}

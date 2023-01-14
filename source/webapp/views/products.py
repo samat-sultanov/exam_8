@@ -1,8 +1,9 @@
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
-from webapp.forms import ProductForm
 from webapp.models import Product
+from webapp.forms import ProductForm
 
 
 class IndexView(ListView):
@@ -19,9 +20,9 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         reviews = self.object.reviews.all()
-        if not self.request.user.has_perm("webapp.view_not_moderated_review"):
+        if not self.request.user.has_perm("webapp.review_not_moderated"):
             reviews = reviews.filter(is_moderated=True)
-        context['reviews'] = reviews.order_by("-edited_at")
+        context['reviews'] = reviews.order_by("-updated_at")
         return context
 
 
@@ -33,7 +34,7 @@ class ProductCreateView(CreateView):
         return reverse("webapp:product_view", kwargs={"pk": self.object.pk})
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(PermissionRequiredMixin, UpdateView):
     form_class = ProductForm
     template_name = "products/update.html"
     model = Product
@@ -43,7 +44,7 @@ class ProductUpdateView(UpdateView):
         return reverse("webapp:product_view", kwargs={"pk": self.object.pk})
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(PermissionRequiredMixin, DeleteView):
     model = Product
     template_name = "products/delete.html"
     success_url = reverse_lazy('webapp:index')

@@ -1,0 +1,24 @@
+<h1 class="text-center">Отзывы</h1>
+<div class="row">
+    {% for review in reviews %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ review.mark }} <span>{{ review.author.username }}|
+                        {{ review.author.email }}</span></h5>
+                </div>
+                <div>
+                    <p>{{ review.text }}</p>
+                </div>
+                {% if review.author == request.user or perms.webapp.change_review %}
+                    <a href="{% url "webapp:update_review" review.pk %}">Редактировать</a>
+                {% endif %}
+                {% if review.author == request.user or perms.webapp.delete_review %}
+                    <a href="{% url "webapp:delete_review" review.pk %}">Удалить</a>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        Нету отзывов!
+    {% endfor %}
+</div>

@@ -4,24 +4,24 @@
 {% block nav %}
     {% if perms.webapp.add_product %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url "webapp:create_product" %}">Создание продукта</a>
+            <a class="nav-link" href="{% url "webapp:create_product" %}">Добавить Товар</a>
         </li>
     {% endif %}
-    {% if perms.webapp.view_not_moderated_review %}
+    {% if perms.webapp.review_not_moderated %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url "webapp:not_moderated_reviews" %}">Непромодерированные отзывы</a>
+            <a class="nav-link" href="{% url "webapp:not_moderated_reviews" %}">Немодерированные отзывы</a>
         </li>
     {% endif %}
 {% endblock %}
 
 {% block content %}
-    <h1 class="text-center">Товары:</h1>
+    <h1 class="text-center">Товары</h1>
     <div class="row">
         {% for product in products %}
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">{{ product.name }} | {{ product.get_avg }}</h5>
+                        <h5 class="card-title">{{ product.name }} | {{ product.get_avg_mark }}</h5>
                         <p>{{ product.category }}</p>
                     </div>
                     <a href="{% url "webapp:product_view" product.pk %}" class="card-link btn btn-primary">Подробнее</a>

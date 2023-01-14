@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <h2>вы действительно хотите удалить товар {{ product.name }} ?</h2>
+    <h2>Вы действительно хотите удалить товар {{ product.name }}?</h2>
     <form action="" method="post">
         {% csrf_token %}
         <button class="btn" type="submit">Да</button>

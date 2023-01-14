@@ -1,10 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Создание комментария{% endblock %}
+
+{% block title %}
+    Добавить комментарий
+{% endblock %}
 
 {% block content %}
-    <h1>Create Comment</h1>
+    <h1>Добавить комментарий</h1>
     <form action="" method="post">
-        {% include "partial/form.html" with button_text="Создать" %}
+        {% include "partial/form.html" with button_text="Добавить" %}
     </form>
-    <a href="{% url "webapp:index" %}">На главную</a>
 {% endblock %}

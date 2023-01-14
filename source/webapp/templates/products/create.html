@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Добавить Товар
+    Добавить товар
 {% endblock %}
 
 {% block content %}
     <div class="text-center">
-        <h1>Добавить Товар</h1>
+        <h1>Добавить товар</h1>
         <form action="" method="post" enctype="multipart/form-data">
-            {% include "partial/form.html" with button_text="Создать" %}
+            {% include "partial/form.html" with button_text="Добавить" %}
         </form>
-        <a href="{% url "webapp:index" %}">На главную</a>
     </div>
 {% endblock %}

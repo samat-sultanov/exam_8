@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.shortcuts import get_object_or_404
@@ -6,7 +7,7 @@ from webapp.forms import ReviewUserForm, ReviewModeratorForm
 from webapp.models import Product, Review
 
 
-class ReviewCreateView(CreateView):
+class ReviewCreateView(LoginRequiredMixin, CreateView):
     form_class = ReviewUserForm
     template_name = "reviews/create.html"
 
@@ -21,9 +22,10 @@ class ReviewCreateView(CreateView):
         return reverse("webapp:product_view", kwargs={"pk": self.object.product.pk})
 
 
-class ReviewUpdateView(UpdateView):
+class ReviewUpdateView(PermissionRequiredMixin, UpdateView):
     form_class = ReviewUserForm
     template_name = "reviews/update.html"
+    permission_required = "webapp.change_review"
     model = Review
 
     def get_form_class(self):
@@ -31,21 +33,29 @@ class ReviewUpdateView(UpdateView):
             return ReviewModeratorForm
         return ReviewUserForm
 
+    def has_permission(self):
+        return super().has_permission() or self.get_object().author == self.request.user
+
     def get_success_url(self):
         return reverse("webapp:product_view", kwargs={"pk": self.object.product.pk})
 
 
-class ReviewDeleteView(DeleteView):
+class ReviewDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "webapp.change_review"
     model = Review
 
     def get(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
 
+    def has_permission(self):
+        return super().has_permission() or self.get_object().author == self.request.user
+
     def get_success_url(self):
         return reverse("webapp:product_view", kwargs={"pk": self.object.product.pk})
 
 
-class NotModeratedReviewView(ListView):
+class NotModeratedReview(PermissionRequiredMixin, ListView):
     queryset = Review.objects.filter(is_moderated=False)
     context_object_name = "reviews"
     template_name = "reviews/not_moderated.html"
+    permission_required = "webapp.review_not_moderated"
