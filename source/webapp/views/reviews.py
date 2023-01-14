@@ -58,4 +58,5 @@ class NotModeratedReview(PermissionRequiredMixin, ListView):
     queryset = Review.objects.filter(is_moderated=False)
     context_object_name = "reviews"
     template_name = "reviews/not_moderated.html"
+    ordering = ['-updated_at']
     permission_required = "webapp.review_not_moderated"

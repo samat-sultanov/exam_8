@@ -21,7 +21,7 @@
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">{{ product.name }} | {{ product.get_avg_mark }}</h5>
+                        <h5 class="card-title">{{ product.name }} | {{ product.get_avg_mark|default_if_none:0 }}</h5>
                         <p>{{ product.category }}</p>
                     </div>
                     <a href="{% url "webapp:product_view" product.pk %}" class="card-link btn btn-primary">Подробнее</a>
