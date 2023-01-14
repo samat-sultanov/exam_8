@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block nav %}
+    {% if perms.webapp.add_product %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "webapp:create_product" %}">Создание продукта</a>
+        </li>
+    {% endif %}
+    {% if perms.webapp.view_not_moderated_review %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "webapp:not_moderated_reviews" %}">Непромодерированные отзывы</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Товары:</h1>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }} | {{ product.get_avg }}</h5>
+                        <p>{{ product.category }}</p>
+                    </div>
+                    <a href="{% url "webapp:product_view" product.pk %}" class="card-link btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        {% empty %}
+        {% endfor %}
+        {% if is_paginated %}
+            <div class="text-center">{% include "partial/pagination.html" %}</div>
+        {% endif %}
+    </div>
+{% endblock %}
+

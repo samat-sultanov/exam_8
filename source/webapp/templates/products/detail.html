@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="card mt-3">
+        <div class="card-body text-center">
+            <h5 class="card-title">{{ product.name }} | {{ product.get_avg }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Автор: {{ product.category }}</h6>
+            <p class="card-text">{{ article.description }}</p>
+            {% if product.picture %}
+                <img src="{{ product.picture.url }}" alt="#">
+            {% else %}
+                <img src="{% static "images/image.jpg" %}" alt="">
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
