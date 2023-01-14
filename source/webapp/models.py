@@ -41,3 +41,6 @@ class Review(models.Model):
         verbose_name_plural = "Отзывы"
         permissions = [("review_not_moderated", "Просмотр немодерированных отзывов")]
 
+    def __str__(self):
+        return f"{self.pk}: {self.author.username} - {self.product.name}"
+
